@@ -5,6 +5,7 @@ import { Alert } from 'antd'
 import './App.css'
 import { MoviesList } from '../Movies-list'
 import { MoviesServes } from '../../Movies-serves/MoviesServes'
+import { MovieInput } from '../MoovieInput'
 
 class App extends Component {
   MoviesServes = new MoviesServes()
@@ -13,19 +14,28 @@ class App extends Component {
     loading: true,
     error: false,
   }
-
-  constructor(props) {
-    super(props)
-    this.onMovies()
+  componentDidMount() {
+    this.MoviesServes.getMovies('return')
+      .then((films) => {
+        this.setState({
+          films: films.results,
+          loading: false,
+        })
+      })
+      .catch(this.onError)
   }
+
   onError = () => {
     this.setState({
-      loading: false,
       error: true,
+      loading: false,
     })
   }
-  async onMovies() {
-    await this.MoviesServes.getMovies('нгенгнпршнгпгн')
+  onLoad = () => {
+    this.setState({ loading: true })
+  }
+  onMovies = (url) => {
+    this.MoviesServes.getMovies(url)
       .then((films) => {
         this.setState({
           films: films.results,
@@ -36,13 +46,25 @@ class App extends Component {
   }
   render() {
     const { loading, error } = this.state
+    const err = error ? (
+      <Alert message={'error'} type={'error'} banner={true} description={'Sorry, please check title films'} />
+    ) : null
     return (
       <React.Fragment>
         <Online>
-          <MoviesList films={this.state.films} loading={loading} error={error} />
+          <div className="app">
+            <MovieInput onMovies={this.onMovies} />
+            <MoviesList films={this.state.films} loading={loading} error={error} />
+            {err}
+          </div>
         </Online>
         <Offline>
-          <Alert message={'error'} type={'error'} banner={true} description={'Please, check your router'} />
+          <Alert
+            message={'error'}
+            type={'error'}
+            banner={true}
+            description={'Please, check your router, you are offline'}
+          />
         </Offline>
       </React.Fragment>
     )

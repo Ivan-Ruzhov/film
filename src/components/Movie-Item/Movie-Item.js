@@ -41,15 +41,13 @@ const MovieItem = (props) => {
       <div className="movie-item__container">
         <div className="movie-item__header">
           <header className="movie-item__title">{original_title}</header>
-          {/*<Badge className="movie-item__count" count={vote_average} color="white" />*/}
         </div>
         <div className="movie-item__date-release">{refactorDate(release_date)}</div>
         <div className="movie-item__categories-container">
           <span className="movie-item__category-first movie-item__categories">Жанр</span>
           <span className="movie-item__category-second movie-item__categories">Жанр2</span>
         </div>
-        <p className="movie-item__description">{cutText(overview, 50)}</p>
-        {/*<Rate className="movie-item__stars" value={vote_average} disabled={true} />*/}
+        <p className="movie-item__description">{cutText(overview, 30)}</p>
       </div>
     </li>
   )
