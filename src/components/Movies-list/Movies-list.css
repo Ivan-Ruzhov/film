@@ -1,11 +1,16 @@
 .movies-list {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 1010px;
-    height: 1147px;
-    padding: 19px 40px 0 32px;
+    flex-direction: column;
+    margin:  0 auto;
+    height: auto;
     list-style: none;
-    justify-content: space-between;
-    margin: 0 auto;
+    padding: 0;
+}
+@media (min-width: 720px) {
+    .movies-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 1010px;
+        justify-content: space-around;
+    }
 }

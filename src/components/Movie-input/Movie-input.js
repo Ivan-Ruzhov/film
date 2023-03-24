@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
 import { debounce } from 'lodash'
-import './movie-input.css'
+import './Movie-input.css'
 
 class MovieInput extends Component {
   state = {
     text: '',
   }
   onMovies = this.props.onMovies
-  newState = (e) => {
-    this.setState({
-      text: e.target.value,
-    })
-  }
+  page = this.props.page
   onDebounce = debounce(() => {
-    this.onMovies(this.state.text)
-  }, 600)
+    this.onMovies(this.state.text, 1)
+  }, 700)
   onChange = (e) => {
+    if (!e.target.value) {
+      return null
+    }
     this.setState({
       text: e.target.value,
     })

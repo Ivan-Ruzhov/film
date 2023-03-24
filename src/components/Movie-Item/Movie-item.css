@@ -1,0 +1,122 @@
+@media (min-width: 320px) {
+    .movie-item {
+        display: flex;
+        width: 387px;
+        height: 245px;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        font-family: Inter, sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        margin-bottom: 35px;
+        box-shadow:  5px 5px 10px 2px #FAFAFA;
+    }
+    .poster-container {
+        width: 60px;
+        height: 91px;
+        margin: 6px 13px 10px 10px;
+    }
+
+    .poster-container__image {
+        width: 60px;
+        height: 91px;
+    }
+
+    .movie-item__container {
+        display: flex;
+        flex-direction: column;
+        width: 304px;
+        height: 245px;
+    }
+
+    .movie-item__header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 4px;
+    }
+
+    .movie-item__title {
+        font-size: 20px;
+        line-height: 28px;
+        color: #000000;
+    }
+
+    .movie-item__date-release {
+        margin-top: 7px;
+    }
+
+    .movie-item__categories-container {
+        display: flex;
+        flex-direction: row;
+        height: 20px;
+        min-width: 101px;
+        margin-top: 7px;
+    }
+
+    .movie-item__categories {
+        font-size: 12px;
+        line-height: 15px;
+        color: rgba(0, 0, 0, 0.65);
+        border: 1px solid #D9D9D9;
+        border-radius: 2px;
+        background: #FAFAFA;
+        padding: 2px 4px 3px 5px;
+        margin-right: 8px;
+    }
+
+    .movie-item__description {
+        width: 367px;
+        height: 92px;
+        font-size: 12px;
+        line-height: 22px;
+        color: #000000;
+        margin-top: 22px;
+        margin-left: -75px;
+    }
+}
+@media (min-width: 768px) {
+    .movie-item {
+        width: 454px;
+        height: 281px;
+    }
+    .poster-container {
+        display: flex;
+        width: 183px;
+        height: 281px;
+        margin-right: 20px;
+        margin-bottom: 49px;
+    }
+    .poster-container__image {
+        display: flex;
+        width: 183px;
+        height: 281px;
+    }
+    .movie-item__container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .movie-item__date-release {
+        margin-bottom: 9px;
+    }
+
+    .movie-item__count {
+        width: 30px;
+        height: 30px;
+    }
+    .movie-item__date-release {
+        font-size: 12px;
+        line-height: 22px;
+        color: #827e7e;
+    }
+
+    .movie-item__description {
+        width: 228px;
+        height: 129px;
+        margin-left: 0;
+    }
+
+}
+
+

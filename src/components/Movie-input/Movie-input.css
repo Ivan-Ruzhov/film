@@ -3,13 +3,19 @@
     background: #ffffff;
     border: 1px solid #D9D9D9;
     border-radius: 4px;
-    width: 938px;
+    width: 388px;
     height: 40px;
-    margin: 0 auto;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 22px;
     padding: 9px 0 9px 12px;
+    margin: 0 auto 32px auto;
+}
+
+@media (min-width: 720px) {
+    .movie-form__input {
+        width: 938px;
+    }
 }

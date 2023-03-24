@@ -1,2 +1,2 @@
-import { MoviesList } from './Moovies-list'
+import { MoviesList } from './Movies-list'
 export { MoviesList }

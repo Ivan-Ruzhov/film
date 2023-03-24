@@ -1,5 +1,5 @@
 import React from 'react'
-import './Moovie-item.css'
+import './Movie-item.css'
 import { format } from 'date-fns'
 import { enGB } from 'date-fns/locale'
 
