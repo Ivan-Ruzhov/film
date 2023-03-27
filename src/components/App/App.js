@@ -17,9 +17,14 @@ class App extends Component {
     errorTitle: false,
     page: null,
     title: null,
+    questID: null,
+    genre: [],
+    search: true,
+    rated: false,
   }
   componentDidMount() {
-    this.onMovies('return', 1)
+    this.onQuestMovie()
+    this.onRenge()
   }
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -28,15 +33,54 @@ class App extends Component {
     }
   }
 
+  onSearch = () => {
+    this.setState({
+      search: true,
+      rated: false,
+    })
+  }
+  onRated = () => {
+    this.setState({
+      search: false,
+      rated: true,
+    })
+  }
   onError = () => {
     this.setState({
       error: true,
       loading: false,
     })
   }
+  onQuestMovie = () => {
+    this.setState({
+      loading: true,
+    })
+    this.MoviesServes.getQuest()
+      .then(({ guest_session_id }) => {
+        this.setState({
+          questID: guest_session_id,
+          loading: false,
+        })
+      })
+      .catch(this.onError)
+  }
+  onRenge = () => {
+    this.setState({
+      loading: true,
+    })
+    this.MoviesServes.getGenre()
+      .then(({ genres }) => {
+        this.setState({
+          loading: false,
+          genre: genres,
+        })
+      })
+      .catch(this.onError)
+  }
   onMovies = (url, page) => {
     this.setState({
       loading: true,
+      genre: [],
     })
     this.MoviesServes.getMovies(url, page)
       .then((films) => {
@@ -58,26 +102,21 @@ class App extends Component {
       })
       .catch(this.onError)
   }
-  onChange = (e) => {
-    console.log(e.target.value)
-    this.setState(({ page }) => {
-      return {
-        page: ++page,
-      }
-    })
-    console.log(this.state)
-  }
-
   render() {
-    const { loading, error, films, errorTitle, page } = this.state
+    console.log(this.state)
+    const { loading, error, films, errorTitle, page, genre, search } = this.state
+    const genreElem = genre.map((el) => {
+      return <div key={el.id}>{el.name}</div>
+    })
     return (
       <React.Fragment>
         <Online>
           <div className="app">
-            <MovieFilter />
-            <MovieInput onMovies={this.onMovies} page={this.state.page} />
+            <MovieFilter onSearch={this.onSearch} onRated={this.onRated} />
+            {search && <MovieInput onMovies={this.onMovies} page={this.state.page} />}
             {loading && <Spin size={'large'} />}
             {!loading && films && <MoviesList films={this.state.films} error={error} />}
+            {genre && !loading && genreElem}
             {!loading && films && (
               <div className="pagination">
                 <Pagination total={500} current={page} onChange={(page) => this.setState({ page })} />
@@ -91,7 +130,7 @@ class App extends Component {
                 message={'error'}
                 type={'error'}
                 banner={true}
-                description={'Sorry, but films with this title underfined, please rename title'}
+                description={'Sorry, but films with this title undefined, please rename title'}
               />
             )}
           </div>

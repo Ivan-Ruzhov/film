@@ -2,6 +2,7 @@ import React from 'react'
 import './Movie-item.css'
 import { format } from 'date-fns'
 import { enGB } from 'date-fns/locale'
+import { Rate } from 'antd'
 
 const MovieItem = (props) => {
   const { poster_path, original_title, release_date, overview } = props
@@ -40,14 +41,15 @@ const MovieItem = (props) => {
       </div>
       <div className="movie-item__container">
         <div className="movie-item__header">
-          <header className="movie-item__title">{original_title}</header>
+          <header className="movie-item__title">{cutText(original_title, 2)}</header>
         </div>
         <div className="movie-item__date-release">{refactorDate(release_date)}</div>
         <div className="movie-item__categories-container">
           <span className="movie-item__category-first movie-item__categories">Жанр</span>
           <span className="movie-item__category-second movie-item__categories">Жанр2</span>
         </div>
-        <p className="movie-item__description">{cutText(overview, 30)}</p>
+        <p className="movie-item__description">{cutText(overview, 25)}</p>
+        <Rate className="movie-item__stars" count={10} allowHalf={true} />
       </div>
     </li>
   )

@@ -74,6 +74,7 @@
         margin-top: 22px;
         margin-left: -75px;
     }
+
 }
 @media (min-width: 768px) {
     .movie-item {
@@ -84,8 +85,7 @@
         display: flex;
         width: 183px;
         height: 281px;
-        margin-right: 20px;
-        margin-bottom: 49px;
+        margin: 0 20px 0 0;
     }
     .poster-container__image {
         display: flex;
@@ -95,10 +95,20 @@
     .movie-item__container {
         display: flex;
         flex-direction: column;
+        margin-top: 0;
+    }
+
+    .movie-item__header {
+        margin-top: 12px;
+        margin-bottom: 7px;
+    }
+
+    .movie-item__categories-container {
+       margin-bottom: 10px;
     }
 
     .movie-item__date-release {
-        margin-bottom: 9px;
+        margin-bottom: 7px;
     }
 
     .movie-item__count {
@@ -109,12 +119,13 @@
         font-size: 12px;
         line-height: 22px;
         color: #827e7e;
+        margin-top: 0;
     }
 
     .movie-item__description {
         width: 228px;
         height: 129px;
-        margin-left: 0;
+        margin: 0 0 1px 0;
     }
 
 }
