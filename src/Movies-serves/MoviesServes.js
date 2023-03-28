@@ -25,15 +25,23 @@ class MoviesServes {
     }
     return await res.json()
   }
-  async getRateMovies(id, questId) {
+  async getRateMovies(id, questId, rating) {
     const res = await fetch(
       `https://api.themoviedb.org/3/movie/${id}/rating?api_key=9e952eee16b032bd58884df526b3d600&guest_session_id=${questId}`,
-      { method: 'POST' }
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+        body: JSON.stringify({
+          value: rating,
+        }),
+      }
     )
     if (!res.ok) {
       throw new Error(`WARNING!!!! ${res.status}, please check your internet and title films`)
     }
-    return await res.json()
+    return res
   }
   async getQuestRate(id) {
     const res = await fetch(

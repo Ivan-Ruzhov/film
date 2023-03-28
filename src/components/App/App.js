@@ -50,9 +50,10 @@ class App extends Component {
   }
   onQuestRate = (id) => {
     this.MoviesServes.getQuestRate(id)
-      .then(({ result }) => {
+      .then((res) => {
         this.setState({
-          ratedFilms: result,
+          ratedFilms: res.results,
+          films: [],
         })
       })
       .catch(this.onError)
@@ -113,9 +114,9 @@ class App extends Component {
       })
       .catch(this.onError)
   }
-  inRate = (id, questId) => {
-    this.MoviesServes.getRateMovies(id, questId).then((res) => {
-      console.log(res.body)
+  inRate = (id, questId, rating) => {
+    this.MoviesServes.getRateMovies(id, questId, rating).then((res) => {
+      console.log(res)
     })
   }
   render() {

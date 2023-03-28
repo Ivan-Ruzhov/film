@@ -50,7 +50,7 @@ const MovieItem = (props) => {
           <span className="movie-item__category-second movie-item__categories">Жанр2</span>
         </div>
         <p className="movie-item__description">{cutText(overview, 25)}</p>
-        <Rate className="movie-item__stars" count={10} allowHalf={true} onChange={() => inRate(id, questId)} />
+        <Rate className="movie-item__stars" count={10} allowHalf={true} onChange={() => inRate(id, questId, 8)} />
       </div>
     </li>
   )
