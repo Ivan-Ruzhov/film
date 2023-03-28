@@ -7,6 +7,7 @@ import { MoviesList } from '../Movies-list'
 import { MoviesServes } from '../../Movies-serves/MoviesServes'
 import { MovieInput } from '../Movie-input'
 import { MovieFilter } from '../Movie-filter'
+// import { MovieProvider } from "../Movie-service/Movie-service"
 
 class App extends Component {
   MoviesServes = new MoviesServes()
@@ -21,10 +22,11 @@ class App extends Component {
     genre: [],
     search: true,
     rated: false,
+    ratedFilms: [],
   }
   componentDidMount() {
-    this.onQuestMovie()
     this.onRenge()
+    this.onQuestMovie()
   }
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -39,11 +41,21 @@ class App extends Component {
       rated: false,
     })
   }
-  onRated = () => {
+  onRated = (id) => {
     this.setState({
       search: false,
       rated: true,
     })
+    this.onQuestRate(id)
+  }
+  onQuestRate = (id) => {
+    this.MoviesServes.getQuestRate(id)
+      .then(({ result }) => {
+        this.setState({
+          ratedFilms: result,
+        })
+      })
+      .catch(this.onError)
   }
   onError = () => {
     this.setState({
@@ -80,7 +92,6 @@ class App extends Component {
   onMovies = (url, page) => {
     this.setState({
       loading: true,
-      genre: [],
     })
     this.MoviesServes.getMovies(url, page)
       .then((films) => {
@@ -102,21 +113,32 @@ class App extends Component {
       })
       .catch(this.onError)
   }
+  inRate = (id, questId) => {
+    this.MoviesServes.getRateMovies(id, questId).then((res) => {
+      console.log(res.body)
+    })
+  }
   render() {
     console.log(this.state)
-    const { loading, error, films, errorTitle, page, genre, search } = this.state
-    const genreElem = genre.map((el) => {
-      return <div key={el.id}>{el.name}</div>
-    })
+    const { loading, error, films, errorTitle, page, search, rated } = this.state
     return (
       <React.Fragment>
         <Online>
           <div className="app">
-            <MovieFilter onSearch={this.onSearch} onRated={this.onRated} />
-            {search && <MovieInput onMovies={this.onMovies} page={this.state.page} />}
+            <MovieFilter onSearch={this.onSearch} onRated={this.onRated} id={this.state.questID} />
+            {search && <MovieInput onMovies={this.onMovies} page={this.state.page} questID={this.state.questID} />}
             {loading && <Spin size={'large'} />}
-            {!loading && films && <MoviesList films={this.state.films} error={error} />}
-            {genre && !loading && genreElem}
+            {!loading && films && (
+              <MoviesList films={this.state.films} error={error} questId={this.state.questID} inRate={this.inRate} />
+            )}
+            {!loading && rated && (
+              <MoviesList
+                films={this.state.ratedFilms}
+                error={error}
+                questId={this.state.questID}
+                inRate={this.inRate}
+              />
+            )}
             {!loading && films && (
               <div className="pagination">
                 <Pagination total={500} current={page} onChange={(page) => this.setState({ page })} />

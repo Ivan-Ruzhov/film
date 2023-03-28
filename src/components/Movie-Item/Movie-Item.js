@@ -5,7 +5,8 @@ import { enGB } from 'date-fns/locale'
 import { Rate } from 'antd'
 
 const MovieItem = (props) => {
-  const { poster_path, original_title, release_date, overview } = props
+  const { poster_path, original_title, release_date, overview, inRate, id, questId } = props
+  console.log(questId)
   const refactorDate = (date) => {
     if (date === '') {
       return 'No Release Data'
@@ -49,7 +50,7 @@ const MovieItem = (props) => {
           <span className="movie-item__category-second movie-item__categories">Жанр2</span>
         </div>
         <p className="movie-item__description">{cutText(overview, 25)}</p>
-        <Rate className="movie-item__stars" count={10} allowHalf={true} />
+        <Rate className="movie-item__stars" count={10} allowHalf={true} onChange={() => inRate(id, questId)} />
       </div>
     </li>
   )

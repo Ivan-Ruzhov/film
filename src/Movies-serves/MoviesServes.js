@@ -25,6 +25,25 @@ class MoviesServes {
     }
     return await res.json()
   }
+  async getRateMovies(id, questId) {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/${id}/rating?api_key=9e952eee16b032bd58884df526b3d600&guest_session_id=${questId}`,
+      { method: 'POST' }
+    )
+    if (!res.ok) {
+      throw new Error(`WARNING!!!! ${res.status}, please check your internet and title films`)
+    }
+    return await res.json()
+  }
+  async getQuestRate(id) {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/guest_session/${id}/rated/movies?api_key=9e952eee16b032bd58884df526b3d600`
+    )
+    if (!res.ok) {
+      throw new Error(`WARNING!!!! ${res.status}, please check your internet and title films`)
+    }
+    return await res.json()
+  }
 }
 
 export { MoviesServes }

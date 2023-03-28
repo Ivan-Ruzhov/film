@@ -6,9 +6,9 @@ import { MovieItem } from '../Movie-Item'
 
 class MoviesList extends Component {
   render() {
-    const { films, error } = this.props
+    const { films, error, questId, inRate } = this.props
     const elem = films.map((item) => {
-      return <MovieItem key={item.id} {...item} />
+      return <MovieItem key={item.id} {...item} questId={questId} inRate={inRate} />
     })
     return (
       <ul className="movies-list">
