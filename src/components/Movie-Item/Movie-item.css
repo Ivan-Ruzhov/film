@@ -49,6 +49,21 @@
         align-items: center;
         padding-left: 5px;
     }
+    .movie-item__rating_one {
+        border-color: #E90000
+    }
+
+    .movie-item__rating_two {
+        border-color: #E97E00
+    }
+
+    .movie-item__rating_three {
+        border-color: #E9D100
+    }
+
+    .movie-item__rating_four {
+        border-color: #66E900
+    }
 
     .movie-item__title {
         font-size: 20px;
@@ -110,7 +125,15 @@
     .movie-item__container {
         display: flex;
         flex-direction: column;
+        height: 281px;
         margin-top: 0;
+        justify-content: space-around;
+    }
+    .movie-item__container-one {
+        display: flex;
+        flex-direction: column;
+        width: auto;
+        height: auto;
     }
 
     .movie-item__header {
@@ -143,6 +166,9 @@
         margin: 0 0 1px 0;
     }
 
+    .movie-item__title {
+        height: 60px;
+    }
 }
 
 

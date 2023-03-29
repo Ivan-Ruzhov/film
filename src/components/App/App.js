@@ -7,7 +7,7 @@ import { MoviesList } from '../Movies-list'
 import { MoviesServes } from '../../Movies-serves/MoviesServes'
 import { MovieInput } from '../Movie-input'
 import { MovieFilter } from '../Movie-filter'
-// import { MovieProvider } from "../Movie-service/Movie-service"
+import { MovieProvider } from '../Movie-service/Movie-service'
 
 class App extends Component {
   MoviesServes = new MoviesServes()
@@ -131,45 +131,46 @@ class App extends Component {
         films: newArr,
       }
     })
-    console.log(this.state)
   }
+
   render() {
-    const { loading, error, films, errorTitle, page, search, rated } = this.state
-    console.log(this.state)
+    const { loading, error, films, errorTitle, page, search, rated, genre } = this.state
     return (
       <React.Fragment>
         <Online>
           <div className="app">
-            <MovieFilter onSearch={this.onSearch} onRated={this.onRated} id={this.state.questID} />
-            {search && <MovieInput onMovies={this.onMovies} page={this.state.page} questID={this.state.questID} />}
-            {loading && <Spin size={'large'} />}
-            {!loading && films && (
-              <MoviesList films={this.state.films} error={error} questId={this.state.questID} inRate={this.inRate} />
-            )}
-            {!loading && rated && (
-              <MoviesList
-                films={this.state.ratedFilms}
-                error={error}
-                questId={this.state.questID}
-                inRate={this.inRate}
-              />
-            )}
-            {!loading && films && (
-              <div className="pagination">
-                <Pagination total={50} current={page} onChange={(page) => this.setState({ page })} />
-              </div>
-            )}
-            {error && (
-              <Alert message={'error'} type={'error'} banner={true} description={'Sorry, please check title films'} />
-            )}
-            {errorTitle && (
-              <Alert
-                message={'error'}
-                type={'error'}
-                banner={true}
-                description={'Sorry, but films with this title undefined, please rename title'}
-              />
-            )}
+            <MovieProvider value={genre}>
+              <MovieFilter onSearch={this.onSearch} onRated={this.onRated} id={this.state.questID} />
+              {search && <MovieInput onMovies={this.onMovies} page={this.state.page} questID={this.state.questID} />}
+              {loading && <Spin size={'large'} />}
+              {!loading && films && (
+                <MoviesList films={this.state.films} error={error} questId={this.state.questID} inRate={this.inRate} />
+              )}
+              {!loading && rated && (
+                <MoviesList
+                  films={this.state.ratedFilms}
+                  error={error}
+                  questId={this.state.questID}
+                  inRate={this.inRate}
+                />
+              )}
+              {!loading && films && (
+                <div className="pagination">
+                  <Pagination total={500} current={page} onChange={(page) => this.setState({ page })} />
+                </div>
+              )}
+              {error && (
+                <Alert message={'error'} type={'error'} banner={true} description={'Sorry, please check title films'} />
+              )}
+              {errorTitle && (
+                <Alert
+                  message={'error'}
+                  type={'error'}
+                  banner={true}
+                  description={'Sorry, but films with this title undefined, please rename title'}
+                />
+              )}
+            </MovieProvider>
           </div>
         </Online>
         <Offline>

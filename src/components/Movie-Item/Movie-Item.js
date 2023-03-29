@@ -3,9 +3,13 @@ import './Movie-item.css'
 import { format } from 'date-fns'
 import { enGB } from 'date-fns/locale'
 import { Rate } from 'antd'
+import classNames from 'classnames'
+
+import { MovieConsumer } from '../Movie-service/Movie-service'
 
 const MovieItem = (props) => {
-  const { poster_path, original_title, release_date, overview, inRate, id, questId, vote_average, rating } = props
+  const { poster_path, original_title, release_date, overview, inRate, id, questId, vote_average, rating, genre_ids } =
+    props
   const refactorDate = (date) => {
     if (date === '') {
       return 'No Release Data'
@@ -31,35 +35,63 @@ const MovieItem = (props) => {
       return newText.split(' ').splice(0, limit).join(' ') + ' ...'
     }
   }
+  const classBorder = classNames('movie-item__rating', {
+    'movie-item__rating_one': vote_average < 3,
+    'movie-item__rating_two': vote_average < 5,
+    'movie-item__rating_three': vote_average < 7,
+    'movie-item__rating_four': vote_average > 7,
+  })
+  const onRengeFilms = (arr, id) => {
+    if (!id) {
+      const text = 'No genre'
+      return text
+    }
+    const renge = arr.findIndex((el) => el.id === id)
+    const text = arr[renge].name
+    return text
+  }
   return (
-    <li className="movie-item">
-      <div className="poster-container">
-        <img
-          src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
-          alt="Постер к фильму"
-          className="poster-container__image"
-        />
-      </div>
-      <div className="movie-item__container">
-        <div className="movie-item__header">
-          <header className="movie-item__title">{cutText(original_title, 2)}</header>
-          <div className="movie-item__rating">{vote_average.toFixed(1)}</div>
-        </div>
-        <div className="movie-item__date-release">{refactorDate(release_date)}</div>
-        <div className="movie-item__categories-container">
-          <span className="movie-item__category-first movie-item__categories">Жанр</span>
-          <span className="movie-item__category-second movie-item__categories">Жанр2</span>
-        </div>
-        <p className="movie-item__description">{cutText(overview, 25)}</p>
-        <Rate
-          className="movie-item__stars"
-          count={10}
-          allowHalf={true}
-          value={rating}
-          onChange={(value) => inRate(id, questId, value)}
-        />
-      </div>
-    </li>
+    <MovieConsumer>
+      {(genre) => {
+        return (
+          <li className="movie-item">
+            <div className="poster-container">
+              <img
+                src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
+                alt="Постер к фильму"
+                className="poster-container__image"
+              />
+            </div>
+            <div className="movie-item__container">
+              <div className="movie-item__container-one">
+                <div className="movie-item__header">
+                  <header className="movie-item__title">{cutText(original_title, 4)}</header>
+                  <div className={classBorder}>{vote_average.toFixed(1)}</div>
+                </div>
+                <div className="movie-item__date-release">{refactorDate(release_date)}</div>
+                <div className="movie-item__categories-container">
+                  <span className="movie-item__category-first movie-item__categories">
+                    {onRengeFilms(genre, genre_ids[0])}
+                  </span>
+                  <span className="movie-item__category-second movie-item__categories">
+                    {onRengeFilms(genre, genre_ids[1])}
+                  </span>
+                </div>
+                <p className="movie-item__description">{cutText(overview, 20)}</p>
+              </div>
+              <Rate
+                className="movie-item__stars"
+                count={10}
+                allowHalf={true}
+                value={rating}
+                style={{ width: '239px', fontSize: '16px' }}
+                onChange={(value) => inRate(id, questId, value)}
+              />
+            </div>
+          </li>
+        )
+      }}
+    </MovieConsumer>
   )
 }
 export { MovieItem }
