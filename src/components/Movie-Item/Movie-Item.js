@@ -5,8 +5,7 @@ import { enGB } from 'date-fns/locale'
 import { Rate } from 'antd'
 
 const MovieItem = (props) => {
-  const { poster_path, original_title, release_date, overview, inRate, id, questId } = props
-  console.log(questId)
+  const { poster_path, original_title, release_date, overview, inRate, id, questId, vote_average, rating } = props
   const refactorDate = (date) => {
     if (date === '') {
       return 'No Release Data'
@@ -21,8 +20,9 @@ const MovieItem = (props) => {
     return format(new Date(newDate), 'MMMM dd, yyyy', { locale: enGB })
   }
   const cutText = (text, limit) => {
-    if (text.length === 0) {
-      return 'Sorry this movie has no description'
+    if (!text) {
+      const newText = 'Sorry this movie has no description'
+      return newText
     }
     const newText = text.trim()
     if (newText.split(' ').length < limit) {
@@ -43,6 +43,7 @@ const MovieItem = (props) => {
       <div className="movie-item__container">
         <div className="movie-item__header">
           <header className="movie-item__title">{cutText(original_title, 2)}</header>
+          <div className="movie-item__rating">{vote_average.toFixed(1)}</div>
         </div>
         <div className="movie-item__date-release">{refactorDate(release_date)}</div>
         <div className="movie-item__categories-container">
@@ -50,7 +51,13 @@ const MovieItem = (props) => {
           <span className="movie-item__category-second movie-item__categories">Жанр2</span>
         </div>
         <p className="movie-item__description">{cutText(overview, 25)}</p>
-        <Rate className="movie-item__stars" count={10} allowHalf={true} onChange={() => inRate(id, questId, 8)} />
+        <Rate
+          className="movie-item__stars"
+          count={10}
+          allowHalf={true}
+          value={rating}
+          onChange={(value) => inRate(id, questId, value)}
+        />
       </div>
     </li>
   )

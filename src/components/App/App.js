@@ -34,11 +34,15 @@ class App extends Component {
       this.onMovies(this.state.title, this.state.page)
     }
   }
+  componentDidCatch(error, errorInfo) {
+    console.error(errorInfo, error)
+  }
 
   onSearch = () => {
     this.setState({
       search: true,
       rated: false,
+      films: null,
     })
   }
   onRated = (id) => {
@@ -116,12 +120,22 @@ class App extends Component {
   }
   inRate = (id, questId, rating) => {
     this.MoviesServes.getRateMovies(id, questId, rating).then((res) => {
-      console.log(res)
+      return res
     })
+    this.setState(({ films }) => {
+      const idx = films.findIndex((el) => el.id === id)
+      const oldItem = films[idx]
+      const newItem = { ...oldItem, rating: rating }
+      const newArr = [...this.state.films.slice(0, idx), newItem, ...this.state.films.slice(idx + 1)]
+      return {
+        films: newArr,
+      }
+    })
+    console.log(this.state)
   }
   render() {
-    console.log(this.state)
     const { loading, error, films, errorTitle, page, search, rated } = this.state
+    console.log(this.state)
     return (
       <React.Fragment>
         <Online>
@@ -142,7 +156,7 @@ class App extends Component {
             )}
             {!loading && films && (
               <div className="pagination">
-                <Pagination total={500} current={page} onChange={(page) => this.setState({ page })} />
+                <Pagination total={50} current={page} onChange={(page) => this.setState({ page })} />
               </div>
             )}
             {error && (
