@@ -1,8 +1,21 @@
 import React, { Component } from 'react'
 import { debounce } from 'lodash'
 import './Movie-input.css'
-
+import PropTypes from 'prop-types'
 class MovieInput extends Component {
+  static defaultProps = {
+    onMovies: () => {},
+    page: 1,
+  }
+  static propTypes = {
+    onMovies: PropTypes.func,
+    page: PropTypes.number,
+  }
+  myRef = React.createRef()
+  componentDidMount() {
+    this.myRef.current.focus()
+  }
+
   state = {
     text: '',
   }
@@ -26,7 +39,6 @@ class MovieInput extends Component {
       input.value = ''
     }
   }
-
   render() {
     return (
       <React.Fragment>
@@ -36,6 +48,7 @@ class MovieInput extends Component {
           className="movie-form__input"
           onInput={this.onInput}
           onChange={this.onChange}
+          ref={this.myRef}
         />
       </React.Fragment>
     )

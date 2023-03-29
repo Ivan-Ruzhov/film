@@ -1,10 +1,21 @@
 import React, { Component } from 'react'
 import './Movies-list.css'
 import { Alert } from 'antd'
+import PropTypes from 'prop-types'
 
 import { MovieItem } from '../Movie-Item'
 
 class MoviesList extends Component {
+  static defaultProps = {
+    films: [],
+    questId: '',
+    inRate: () => {},
+  }
+  static propTypes = {
+    films: PropTypes.arrayOf(PropTypes.object),
+    questId: PropTypes.string,
+    inRate: PropTypes.func,
+  }
   render() {
     const { films, error, questId, inRate } = this.props
     const elem = films.map((item) => {

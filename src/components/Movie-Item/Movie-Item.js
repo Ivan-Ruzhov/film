@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { enGB } from 'date-fns/locale'
 import { Rate } from 'antd'
 import classNames from 'classnames'
+import PropTypes from 'prop-types'
 
 import { MovieConsumer } from '../Movie-service/Movie-service'
 
@@ -25,8 +26,7 @@ const MovieItem = (props) => {
   }
   const cutText = (text, limit) => {
     if (!text) {
-      const newText = 'Sorry this movie has no description'
-      return newText
+      return 'Sorry this movie has no description'
     }
     const newText = text.trim()
     if (newText.split(' ').length < limit) {
@@ -43,12 +43,10 @@ const MovieItem = (props) => {
   })
   const onRengeFilms = (arr, id) => {
     if (!id) {
-      const text = 'No genre'
-      return text
+      return 'No genre'
     }
     const renge = arr.findIndex((el) => el.id === id)
-    const text = arr[renge].name
-    return text
+    return arr[renge].name
   }
   return (
     <MovieConsumer>
@@ -79,14 +77,15 @@ const MovieItem = (props) => {
                 </div>
                 <p className="movie-item__description">{cutText(overview, 20)}</p>
               </div>
-              <Rate
-                className="movie-item__stars"
-                count={10}
-                allowHalf={true}
-                value={rating}
-                style={{ width: '239px', fontSize: '16px' }}
-                onChange={(value) => inRate(id, questId, value)}
-              />
+              <div className="movie-item__stars">
+                <Rate
+                  count={10}
+                  allowHalf={true}
+                  value={rating}
+                  style={{ width: '239px', fontSize: '16px' }}
+                  onChange={(value) => inRate(id, questId, value)}
+                />
+              </div>
             </div>
           </li>
         )
@@ -94,4 +93,25 @@ const MovieItem = (props) => {
     </MovieConsumer>
   )
 }
+
+MovieItem.defaultProps = {
+  original_title: '',
+  release_date: '',
+  overview: '',
+  inRate: () => {},
+  id: 1,
+  questId: '',
+  vote_average: 0,
+}
+
+MovieItem.propTypes = {
+  original_title: PropTypes.string,
+  release_date: PropTypes.string,
+  overview: PropTypes.string,
+  inRate: PropTypes.func,
+  id: PropTypes.number,
+  questId: PropTypes.string,
+  vote_average: PropTypes.number,
+}
+
 export { MovieItem }

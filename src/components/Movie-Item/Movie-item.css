@@ -125,9 +125,8 @@
     .movie-item__container {
         display: flex;
         flex-direction: column;
-        height: 281px;
+        height: 285px;
         margin-top: 0;
-        justify-content: space-around;
     }
     .movie-item__container-one {
         display: flex;
@@ -137,8 +136,8 @@
     }
 
     .movie-item__header {
-        margin-top: 12px;
         margin-bottom: 7px;
+        justify-content: space-between;
     }
 
     .movie-item__categories-container {
@@ -168,6 +167,11 @@
 
     .movie-item__title {
         height: 60px;
+    }
+
+    .movie-item__stars {
+        display: flex;
+        transform: translateY(-25px);
     }
 }
 
