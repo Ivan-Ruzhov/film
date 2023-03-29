@@ -42,7 +42,7 @@ class App extends Component {
     this.setState({
       search: true,
       rated: false,
-      films: null,
+      films: [],
     })
   }
   onRated = (id) => {
