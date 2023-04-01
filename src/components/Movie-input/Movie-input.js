@@ -5,11 +5,9 @@ import PropTypes from 'prop-types'
 class MovieInput extends Component {
   static defaultProps = {
     onMovies: () => {},
-    page: 1,
   }
   static propTypes = {
     onMovies: PropTypes.func,
-    page: PropTypes.number,
   }
   myRef = React.createRef()
   componentDidMount() {
@@ -20,7 +18,6 @@ class MovieInput extends Component {
     text: '',
   }
   onMovies = this.props.onMovies
-  page = this.props.page
   onDebounce = debounce(() => {
     this.onMovies(this.state.text, 1)
   }, 700)

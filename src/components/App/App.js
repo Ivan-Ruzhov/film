@@ -5,24 +5,28 @@ import { Alert, Spin, Pagination } from 'antd'
 import './App.css'
 import { MoviesList } from '../Movies-list'
 import { MoviesServes } from '../../Movies-serves/MoviesServes'
+import { QuestMovieService } from '../../Movies-serves/QuestMovieService'
 import { MovieInput } from '../Movie-input'
 import { MovieFilter } from '../Movie-filter'
 import { MovieProvider } from '../Movie-service/Movie-service'
 
 class App extends Component {
   MoviesServes = new MoviesServes()
+  QuestMovieService = new QuestMovieService()
   state = {
     films: null,
     loading: true,
     errorStatus: false,
     errorTitle: false,
     page: null,
+    totalPage: 1,
+    ratingPage: 0,
     title: null,
     questID: null,
     genre: [],
     search: true,
     rated: false,
-    ratedFilms: [],
+    ratedFilms: JSON.parse(localStorage.getItem('films')),
   }
   componentDidMount() {
     this.onRenge()
@@ -30,7 +34,10 @@ class App extends Component {
   }
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.page !== prevState.page) {
+    if (this.state.page !== prevState.page && this.state.rated) {
+      this.onQuestRate(this.state.page)
+    }
+    if (this.state.page !== prevState.page && !this.state.rated) {
       this.onMovies(this.state.title, this.state.page)
     }
   }
@@ -45,22 +52,33 @@ class App extends Component {
       films: [],
     })
   }
-  onRated = (id) => {
+  onRated = (page) => {
+    this.onQuestRate(page)
     this.setState({
       search: false,
       rated: true,
     })
-    this.onQuestRate(id)
   }
-  onQuestRate = (id) => {
-    this.MoviesServes.getQuestRate(id)
-      .then((res) => {
+  onQuestRate = (page) => {
+    this.QuestMovieService.getQuestRate(page)
+      .then(({ results, total_pages }) => {
+        if (results.length === 0) {
+          return null
+        }
+        localStorage.setItem('films', JSON.stringify(results))
         this.setState({
-          ratedFilms: res.results,
+          ratedFilms: JSON.parse(localStorage.getItem('films')),
           films: [],
+          totalPage: total_pages,
+          page: page,
         })
       })
       .catch(this.onError)
+  }
+  onPage = (page) => {
+    this.setState({
+      page: page,
+    })
   }
   onError = () => {
     this.setState({
@@ -72,14 +90,7 @@ class App extends Component {
     this.setState({
       loading: true,
     })
-    this.MoviesServes.getQuest()
-      .then(({ guest_session_id }) => {
-        this.setState({
-          questID: guest_session_id,
-          loading: false,
-        })
-      })
-      .catch(this.onError)
+    this.QuestMovieService.getQuest()
   }
   onRenge = () => {
     this.setState({
@@ -99,8 +110,8 @@ class App extends Component {
       loading: true,
     })
     this.MoviesServes.getMovies(url, page)
-      .then((films) => {
-        if (films.results.length === 0) {
+      .then(({ results, total_pages }) => {
+        if (results.length === 0) {
           this.setState({
             films: null,
             loading: false,
@@ -109,23 +120,25 @@ class App extends Component {
           return
         }
         this.setState({
-          films: films.results,
+          films: results,
           loading: false,
           errorTitle: false,
           page: page,
           title: url,
+          totalPage: total_pages,
         })
       })
       .catch(this.onError)
   }
-  inRate = (id, questId, rating) => {
-    this.MoviesServes.getRateMovies(id, questId, rating).then((res) => {
+  inRate = (id, rating) => {
+    this.QuestMovieService.getRateMovies(id, rating).then((res) => {
       return res
     })
     this.setState(({ films }) => {
       const idx = films.findIndex((el) => el.id === id)
       const oldItem = films[idx]
       const newItem = { ...oldItem, rating: rating }
+      sessionStorage.setItem(id, rating)
       const newArr = [...this.state.films.slice(0, idx), newItem, ...this.state.films.slice(idx + 1)]
       return {
         films: newArr,
@@ -134,29 +147,20 @@ class App extends Component {
   }
 
   render() {
-    const { loading, error, films, errorTitle, page, search, rated, genre } = this.state
+    const { loading, error, films, errorTitle, page, search, rated, genre, totalPage, ratedFilms } = this.state
     return (
       <React.Fragment>
         <Online>
           <div className="app">
             <MovieProvider value={genre}>
-              <MovieFilter onSearch={this.onSearch} onRated={this.onRated} id={this.state.questID} />
-              {search && <MovieInput onMovies={this.onMovies} page={this.state.page} questID={this.state.questID} />}
+              <MovieFilter onSearch={this.onSearch} onRated={this.onRated} page={page} />
+              {search && <MovieInput onMovies={this.onMovies} />}
               {loading && <Spin size={'large'} />}
-              {!loading && films && (
-                <MoviesList films={this.state.films} error={error} questId={this.state.questID} inRate={this.inRate} />
-              )}
-              {!loading && rated && (
-                <MoviesList
-                  films={this.state.ratedFilms}
-                  error={error}
-                  questId={this.state.questID}
-                  inRate={this.inRate}
-                />
-              )}
-              {!loading && films && (
+              {!loading && films && <MoviesList films={films} error={error} inRate={this.inRate} />}
+              {!loading && rated && <MoviesList films={ratedFilms} error={error} inRate={this.inRate} />}
+              {!loading && (
                 <div className="pagination">
-                  <Pagination total={500} current={page} onChange={(page) => this.setState({ page })} />
+                  <Pagination total={totalPage * 10} current={page} onChange={(page) => this.setState({ page })} />
                 </div>
               )}
               {error && (

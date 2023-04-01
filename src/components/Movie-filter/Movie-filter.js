@@ -2,13 +2,13 @@ import React from 'react'
 import './Movie-filter.css'
 import PropTypes from 'prop-types'
 
-const MovieFilter = ({ onRated, id, onSearch }) => {
+const MovieFilter = ({ onRated, page, onSearch }) => {
   return (
     <div className="movie-filter">
       <button className="movie-filter__button-search movie-filter__buttons" onClick={onSearch}>
         Search
       </button>
-      <button className="movie-filter__button-rated movie-filter__buttons" onClick={() => onRated(id)}>
+      <button className="movie-filter__button-rated movie-filter__buttons" onClick={() => onRated(page)}>
         Rated
       </button>
     </div>
@@ -17,13 +17,13 @@ const MovieFilter = ({ onRated, id, onSearch }) => {
 
 MovieFilter.defaultProp = {
   onRated: () => {},
-  id: '',
+  page: 0,
   onSearch: () => {},
 }
 
 MovieFilter.propTypes = {
   onRated: PropTypes.func,
-  id: PropTypes.string,
+  page: PropTypes.number,
   onSearch: PropTypes.func,
 }
 export { MovieFilter }

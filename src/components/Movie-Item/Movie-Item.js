@@ -9,8 +9,7 @@ import PropTypes from 'prop-types'
 import { MovieConsumer } from '../Movie-service/Movie-service'
 
 const MovieItem = (props) => {
-  const { poster_path, original_title, release_date, overview, inRate, id, questId, vote_average, rating, genre_ids } =
-    props
+  const { poster_path, original_title, release_date, overview, inRate, id, vote_average, genre_ids } = props
   const refactorDate = (date) => {
     if (date === '') {
       return 'No Release Data'
@@ -35,18 +34,20 @@ const MovieItem = (props) => {
       return newText.split(' ').splice(0, limit).join(' ') + ' ...'
     }
   }
+  // const genreFirst = genre_ids[0]
+  // const genreSecond = genre_ids[1]
   const classBorder = classNames('movie-item__rating', {
     'movie-item__rating_one': vote_average < 3,
     'movie-item__rating_two': vote_average < 5,
     'movie-item__rating_three': vote_average < 7,
     'movie-item__rating_four': vote_average > 7,
   })
-  const onRengeFilms = (arr, id) => {
+  const onGenreFilms = (arr, id) => {
     if (!id) {
       return 'No genre'
     }
-    const renge = arr.findIndex((el) => el.id === id)
-    return arr[renge].name
+    const genre = arr.findIndex((el) => el.id === id)
+    return arr[genre].name
   }
   return (
     <MovieConsumer>
@@ -69,10 +70,10 @@ const MovieItem = (props) => {
                 <div className="movie-item__date-release">{refactorDate(release_date)}</div>
                 <div className="movie-item__categories-container">
                   <span className="movie-item__category-first movie-item__categories">
-                    {onRengeFilms(genre, genre_ids[0])}
+                    {onGenreFilms(genre, genre_ids[0])}
                   </span>
                   <span className="movie-item__category-second movie-item__categories">
-                    {onRengeFilms(genre, genre_ids[1])}
+                    {onGenreFilms(genre, genre_ids[1])}
                   </span>
                 </div>
                 <p className="movie-item__description">{cutText(overview, 20)}</p>
@@ -80,10 +81,12 @@ const MovieItem = (props) => {
               <div className="movie-item__stars">
                 <Rate
                   count={10}
-                  allowHalf={true}
-                  value={rating}
+                  allowHalf={false}
+                  value={sessionStorage.getItem(id)}
                   style={{ width: '239px', fontSize: '16px' }}
-                  onChange={(value) => inRate(id, questId, value)}
+                  onChange={(value) => {
+                    inRate(id, value)
+                  }}
                 />
               </div>
             </div>
