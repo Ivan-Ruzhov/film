@@ -34,8 +34,6 @@ const MovieItem = (props) => {
       return newText.split(' ').splice(0, limit).join(' ') + ' ...'
     }
   }
-  // const genreFirst = genre_ids[0]
-  // const genreSecond = genre_ids[1]
   const classBorder = classNames('movie-item__rating', {
     'movie-item__rating_one': vote_average < 3,
     'movie-item__rating_two': vote_average < 5,
@@ -55,11 +53,20 @@ const MovieItem = (props) => {
         return (
           <li className="movie-item">
             <div className="poster-container">
-              <img
-                src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
-                alt="Постер к фильму"
-                className="poster-container__image"
-              />
+              {poster_path && (
+                <img
+                  src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
+                  alt="Постер к фильму"
+                  className="poster-container__image"
+                />
+              )}
+              {!poster_path && (
+                <img
+                  src={'https://www.behance.net/gallery/45513057/Say-No-Poster'}
+                  alt="Постер к фильму"
+                  className="poster-container__image"
+                />
+              )}
             </div>
             <div className="movie-item__container">
               <div className="movie-item__container-one">
@@ -82,7 +89,7 @@ const MovieItem = (props) => {
                 <Rate
                   count={10}
                   allowHalf={false}
-                  value={sessionStorage.getItem(id)}
+                  value={localStorage.getItem(id)}
                   style={{ width: '239px', fontSize: '16px' }}
                   onChange={(value) => {
                     inRate(id, value)

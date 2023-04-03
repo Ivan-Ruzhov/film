@@ -17,7 +17,7 @@ const MovieFilter = ({ onRated, page, onSearch }) => {
 
 MovieFilter.defaultProp = {
   onRated: () => {},
-  page: 0,
+  page: 1,
   onSearch: () => {},
 }
 
