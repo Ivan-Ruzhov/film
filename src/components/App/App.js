@@ -146,11 +146,6 @@ class App extends Component {
               {search && <MovieInput onMovies={this.onMovies} />}
               {loading && <Spin size={'large'} />}
               {!loading && films && <MoviesList films={films} error={error} inRate={this.inRate} />}
-              {!loading && (
-                <div className="pagination">
-                  <Pagination total={totalPage * 10} current={page} onChange={(page) => this.setState({ page })} />
-                </div>
-              )}
               {error && (
                 <Alert message={'error'} type={'error'} banner={true} description={'Sorry, please check title films'} />
               )}
@@ -161,6 +156,11 @@ class App extends Component {
                   banner={true}
                   description={'Sorry, but films with this title undefined, please rename title'}
                 />
+              )}
+              {!loading && !error && (
+                <div className="pagination">
+                  <Pagination total={totalPage * 10} current={page} onChange={(page) => this.setState({ page })} />
+                </div>
               )}
             </MovieProvider>
           </div>
