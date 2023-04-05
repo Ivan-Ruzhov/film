@@ -49,6 +49,7 @@ class App extends Component {
     })
   }
   onRated = (page) => {
+    this.setState({ films: [], totalPage: 0, page: 1 })
     this.onQuestRate(page)
     this.setState({
       search: false,

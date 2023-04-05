@@ -22,14 +22,14 @@ class MoviesServes {
     return await res.json()
   }
   async getQuest() {
+    if (localStorage.getItem('id')) {
+      return
+    }
     const params = new URL('authentication/guest_session/new', this._apiBaseSearch)
     params.searchParams.set('api_key', '9e952eee16b032bd58884df526b3d600')
     const res = await fetch(params)
     if (!res.ok) {
       throw new Error(`WARNING!!!! ${res.status}, please check your internet and title films`)
-    }
-    if (localStorage.getItem('id')) {
-      return
     }
     return await res.json().then(({ guest_session_id }) => {
       console.log(localStorage.getItem('id'))
