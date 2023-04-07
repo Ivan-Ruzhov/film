@@ -26,7 +26,7 @@ class App extends Component {
   }
   componentDidMount() {
     this.onGenge()
-    this.onQuestMovie()
+    localStorage.getItem('id') ? null : this.onQuestMovie()
   }
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
