@@ -1,6 +1,6 @@
 class MoviesServes {
   _apiBaseSearch = 'https://api.themoviedb.org/3/'
-  id
+  id = localStorage.getItem('id')
   async getMovies(title, page) {
     const params = new URL('search/movie', this._apiBaseSearch)
     params.searchParams.set('api_key', '9e952eee16b032bd58884df526b3d600')
@@ -30,7 +30,6 @@ class MoviesServes {
     }
     return await res.json().then(({ guest_session_id }) => {
       localStorage.setItem('id', guest_session_id)
-      this.id = guest_session_id
     })
   }
   async getRateMovies(id, rating) {
