@@ -36,7 +36,7 @@ class MoviesServes {
   async getRateMovies(id, rating) {
     const params = new URL(`movie/${id}/rating`, this._apiBaseSearch)
     params.searchParams.set('api_key', '9e952eee16b032bd58884df526b3d600')
-    params.searchParams.set('guest_session_id', localStorage.getItem('id'))
+    params.searchParams.set('guest_session_id', this.id)
     const res = await fetch(params, {
       method: 'POST',
       headers: {
@@ -52,7 +52,7 @@ class MoviesServes {
     return res
   }
   async getQuestRate(page) {
-    const params = new URL(`guest_session/${localStorage.getItem('id')}/rated/movies`, this._apiBaseSearch)
+    const params = new URL(`guest_session/${this.id}/rated/movies`, this._apiBaseSearch)
     params.searchParams.set('api_key', '9e952eee16b032bd58884df526b3d600')
     params.searchParams.set('page', page)
     const res = await fetch(params)
